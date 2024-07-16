@@ -14,12 +14,30 @@ module.exports ={
         let Senha= req.body.Senha
         let Email= req.body.Email
         let Cargo= "Membro"
-        let Discordid= req.body.Discordid
 
         let senhaHash = await bcrypt.hash(Senha, 10);
 
 
-        const newUser = await userServices.seveNewUser(Name, senhaHash, Email, Cargo, Discordid);        
+        const newUser = await userServices.seveNewUser(Name, senhaHash, Email, Cargo);        
         res.json(newUser);
-    }
+    },
+    getAllMembres:async(req,res)=>{
+        let json= [];
+
+        try {
+            const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/guilds/${process.env.ID_GUILDA}/members`, { timeout: 200000 });
+            const membros = response.data.length;
+
+            for(let i = 0; i < membros; i++){
+                let membro = {
+                    nome: response.data[i].Name,
+                    id: response.data[i].Id
+                }
+                json.push(membro);
+            }
+        } catch (error) {
+            console.error('Erro ao fazer requisição:', error);
+        }
+        res.json(json);
+    },
 }

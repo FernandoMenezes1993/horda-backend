@@ -16,6 +16,12 @@ var corsOptions = {
     optionsSuccessStatus: 200 
 }
 
-router.post("/user/new", cors(corsOptions), userControllers.addNewUser);
+//GET
+    router.get("/playresGuild", cors(corsOptions),userControllers.getAllMembres);
+    //Pegar o nome e ID de todos os membros da Insanity BR
+
+//POST
+    router.post("/user/new", cors(corsOptions), userControllers.addNewUser);
+    //Cadastra um novo jogador @@ incompleta @@
 
 module.exports = router;

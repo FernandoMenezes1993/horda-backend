@@ -6,18 +6,16 @@ const Usuarios = mongoose.model("Usuarios", {
     Name: String,
     Senha: String,
     Email: String,
-    Cargo: String,
-    Discordid: String
+    Cargo: String
 });
 
 module.exports ={
-    seveNewUser:async(Name, senhaHash, Email, Cargo, Discordid)=>{
+    seveNewUser:async(Name, senhaHash, Email, Cargo)=>{
         const newUser = new Usuarios ({
             Name: Name,
             Senha: senhaHash,
             Email: Email,
-            Cargo: Cargo,
-            Discordid: Discordid
+            Cargo: Cargo
         });
         await newUser.save();
         return newUser;
