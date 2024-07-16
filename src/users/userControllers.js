@@ -39,5 +39,5 @@ module.exports ={
             console.error('Erro ao fazer requisição:', error);
         }
         res.json(json);
-    },
+    }
 }
