@@ -12,13 +12,12 @@ module.exports ={
 
         let Name= req.body.Name
         let Senha= req.body.Senha
-        let Email= req.body.Email
         let Cargo= "Membro"
 
         let senhaHash = await bcrypt.hash(Senha, 10);
 
 
-        const newUser = await userServices.seveNewUser(Name, senhaHash, Email, Cargo);        
+        const newUser = await userServices.seveNewUser(Name, senhaHash, Cargo);        
         res.json(newUser);
     },
     getAllMembres:async(req,res)=>{
