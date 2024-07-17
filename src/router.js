@@ -18,7 +18,13 @@ var corsOptions = {
 
 //GET
     router.get("/playresGuild", cors(corsOptions),userControllers.getAllMembres);
-    //Pegar o nome e ID de todos os membros da Insanity BR
+    //Pegar o nome e ID de todos os membros da A Horda
+
+    router.get("/checks/name/:Nickname", cors(corsOptions), userControllers.checksName);
+    //Verificar se o Nickname digitado já está cadastrado no mongoDB
+
+    router.get("/checks/user/:Nickname/:Senha", cors(corsOptions), userControllers.checkUser);
+    //Verificar credencias do usuario
 
 //POST
     router.post("/user/new", cors(corsOptions), userControllers.addNewUser);

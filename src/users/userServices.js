@@ -17,5 +17,9 @@ module.exports ={
         });
         await newUser.save();
         return newUser;
-    }   
+    },
+    checksNickname:async(Nome)=>{
+        const nomeVerificado = Usuarios.find({ Name: Nome });
+        return nomeVerificado;
+    } 
 }
