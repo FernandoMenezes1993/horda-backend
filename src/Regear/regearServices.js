@@ -6,7 +6,6 @@ const Regear = mongoose.model("Regear", {
     Name: String,
     Link: String,
     Responsavel: String,
-    Class: String,
     Status: String,
     MainHand: String,
     OffHand: String,
@@ -24,5 +23,31 @@ const Regear = mongoose.model("Regear", {
 });
 
 module.exports ={
-    
+    saveReger:async(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, Capa, Bolsa)=>{
+        const newRegear = new Regear ({
+            Name: Name,
+            Link: Link,
+            Responsavel: Responsavel,
+            Status: Status,
+            MainHand: MainHand,
+            OffHand: OffHand,
+            Cabeca: Cabeca,
+            Peitoral: Peitoral,
+            Bota: Bota,
+            Data: Data,
+            Dia: Dia,
+            Capa: Capa,
+            Bolsa: Bolsa,
+            DataAceito: "None",
+            DataFinalizado: "None",
+            MsgStaff: "Null",
+            bauRegear: "0"
+        });
+        await newRegear.save();
+        return newRegear;
+    },
+    regears:async(Nickname)=>{
+        const regears = Regear.find( { Name: Nickname } );
+        return regears;
+    }    
 }

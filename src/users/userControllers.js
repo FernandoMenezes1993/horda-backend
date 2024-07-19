@@ -13,11 +13,12 @@ module.exports ={
         let Name= req.body.Name
         let Senha= req.body.Senha
         let Cargo= "Membro"
+        let backgroundHorda= "Wlack"
 
         let senhaHash = await bcrypt.hash(Senha, 10);
 
 
-        const newUser = await userServices.seveNewUser(Name, senhaHash, Cargo);        
+        const newUser = await userServices.seveNewUser(Name, senhaHash, Cargo, backgroundHorda);        
         res.json(newUser);
     },
     getAllMembres:async(req,res)=>{
@@ -73,6 +74,7 @@ module.exports ={
             let senhaHash = nameChecks[0].Senha;
             let id = nameChecks[0]._id.toString();
             let Cargo = nameChecks[0].Cargo;
+            let backgroundHorda = nameChecks[0].backgroundHorda;
 
             const isValidPassword = await bcrypt.compare(SenhaNoHash.trim(), senhaHash.trim());
             if(isValidPassword){
@@ -81,10 +83,11 @@ module.exports ={
                 const token = jwt.sign({
                     idUser: id,
                     User: Nome,
-                    Cargo: Cargo
+                    Cargo: Cargo,
+                    backgroundHorda: backgroundHorda
                 },
                 secret,{
-                    expiresIn: 18000 // 1 minutos
+                    expiresIn: 18000 // valido por 5 horas
                 });
                 //Senha ok
                 json={
@@ -102,6 +105,33 @@ module.exports ={
             json={
                 res: 404
             }
+        }
+        res.json(json);
+    },
+    checkToken:async(req,res)=>{
+        let json={};
+        const SECRET = process.env.SECRET
+
+        let token = req.params.token
+        try {
+            const decodeToken = jwt.verify(token, SECRET);
+            json={
+                res: 200,
+                idUser: decodeToken.idUser,
+                User: decodeToken.User,
+                Cargo: decodeToken.Cargo,
+                backgroundHorda: decodeToken.backgroundHorda,
+                token
+            };
+        } catch (error) {
+            json={
+                res: 502,
+                idUser: 'None',
+                User: 'None',
+                Cargo: 'None',
+                backgroundHorda: 'None',
+                token: 'None'
+            };
         }
         res.json(json);
     }
