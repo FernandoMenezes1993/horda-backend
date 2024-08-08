@@ -46,6 +46,11 @@ module.exports ={
 
         const regears = await regearServices.regears(Nickname);
         res.json(regears);
+    },
+    getRegerId:async(req, res)=>{
+        let id = req.params.id
+        const regear = await regearServices.getRegear(id);
+        res.json(regear);
     }
     
 }

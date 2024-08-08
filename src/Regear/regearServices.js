@@ -49,5 +49,15 @@ module.exports ={
     regears:async(Nickname)=>{
         const regears = Regear.find( { Name: Nickname } );
         return regears;
-    }    
+    },
+    getRegear:async(id)=>{
+        try {
+            const regear = await Regear.findById(id);
+            return regear;
+        } catch (error) {
+            console.error('Erro ao buscar Regear:', error);
+            // Lidar com o erro de forma adequada, possivelmente lançando novamente ou retornando null
+            throw error; // ou return null;
+        }
+    }   
 }

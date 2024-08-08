@@ -35,6 +35,9 @@ router.get('/checks/:token', cors(corsOptions), userControllers.checkToken);
         router.get('/get/regear/:Nickname', cors(corsOptions), regearControllers.getRegear);
         //Pega todas as solicitações de regear que esteja no Nickname
 
+        router.get('/regear/:id', cors(corsOptions), regearControllers.getRegerId);
+        //Pega um regear pelo id
+
 //POST
     router.post("/user/new", cors(corsOptions), userControllers.addNewUser);
     //Cadastra um novo jogador
