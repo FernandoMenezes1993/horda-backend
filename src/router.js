@@ -38,6 +38,9 @@ router.get('/checks/:token', cors(corsOptions), userControllers.checkToken);
         router.get('/regear/:id', cors(corsOptions), regearControllers.getRegerId);
         //Pega um regear pelo id
 
+        router.get("/get/all/regear/staff", cors(corsOptions), regearControllers.getAllRegearStaff);
+        //Pega todos os regear aceitos e pendentes para a staff
+
 //POST
     router.post("/user/new", cors(corsOptions), userControllers.addNewUser);
     //Cadastra um novo jogador
@@ -45,4 +48,10 @@ router.get('/checks/:token', cors(corsOptions), userControllers.checkToken);
     router.post("/create/regear",cors(corsOptions), regearControllers.createRegear);
     //Cadastrar um Re-gear
 
+//POST
+    router.put("/regear/att/:id", cors(corsOptions), regearControllers.attStatusRegar);
+    //Atualiza o status e o responsavel pelo regear
+
+    router.put("/regear/finalizar/:id", cors(corsOptions), regearControllers.finalizaRegar);
+    //Finaliza um regear
 module.exports = router;

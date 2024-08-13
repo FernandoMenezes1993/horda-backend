@@ -19,6 +19,7 @@ module.exports ={
         let OffHand
         let capa
         let bolsa
+        let fama
 
         const parts = Link.split('/');
         const lastParameter = parts[parts.length - 1];
@@ -32,12 +33,13 @@ module.exports ={
             Bota = resposta.data.Victim.Equipment.Shoes ? resposta.data.Victim.Equipment.Shoes.Type : "Null";
             capa = resposta.data.Victim.Equipment.Cape ? resposta.data.Victim.Equipment.Cape.Type : "Null";
             bolsa = resposta.data.Victim.Equipment.Bag ? resposta.data.Victim.Equipment.Bag.Type : "Null";
+            fama = resposta.data.Victim.DeathFame;
 
         } catch (error) {
             res.status(500).send("500");
             return;
         }
-        const newRegear = await regearServices.saveReger(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, capa, bolsa);
+        const newRegear = await regearServices.saveReger(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, capa, bolsa, fama);
 
         res.json(200);
     },
@@ -51,6 +53,39 @@ module.exports ={
         let id = req.params.id
         const regear = await regearServices.getRegear(id);
         res.json(regear);
-    }
-    
+    },
+    attStatusRegar:async(req,res)=>{
+        let id = req.params.id
+        let Responsavel= req.body.Responsavel
+        let Status = req.body.Status
+        let DataAceito = req.body.DataAceito
+
+
+        const attRegear = await regearServices.attRegearAceito(id, Responsavel, Status, DataAceito);
+        res.json(attRegear);
+    },
+    finalizaRegar:async(req, res)=>{
+        let id = req.params.id
+
+        let MsgStaff = req.body.MsgStaff
+        let bauRegear = req.body.bauRegear
+        let Status = req.body.Status
+        let DataFinalizado = req.body.DataFinalizado
+
+        const attRegear = await regearServices.regearFinalizado(id, bauRegear, Status, DataFinalizado, MsgStaff);
+        res.json(attRegear);
+    },
+    getAllRegearStaff:async(req, res)=>{
+        let json =[];
+        const allRegears = await regearServices.getRegears();
+        let regears = allRegears.length
+        
+
+        for(let i =0; i < regears; i++){
+            if(allRegears[i].Status == "Pendente" || allRegears[i].Status == "Aceito"){
+                json.push(allRegears[i])
+            }
+        }
+        res.json(json);
+    }    
 }

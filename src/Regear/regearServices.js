@@ -19,11 +19,12 @@ const Regear = mongoose.model("Regear", {
     DataAceito: String,
     DataFinalizado: String,
     MsgStaff: String,
-    bauRegear: String
+    bauRegear: String,
+    Fama: String
 });
 
 module.exports ={
-    saveReger:async(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, Capa, Bolsa)=>{
+    saveReger:async(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, Capa, Bolsa, fama)=>{
         const newRegear = new Regear ({
             Name: Name,
             Link: Link,
@@ -41,7 +42,8 @@ module.exports ={
             DataAceito: "None",
             DataFinalizado: "None",
             MsgStaff: "Null",
-            bauRegear: "0"
+            bauRegear: "0",
+            Fama: fama
         });
         await newRegear.save();
         return newRegear;
@@ -59,5 +61,26 @@ module.exports ={
             // Lidar com o erro de forma adequada, possivelmente lançando novamente ou retornando null
             throw error; // ou return null;
         }
-    }   
+    },
+    attRegearAceito:async(id, Responsavel, Status, DataAceito)=>{
+        const updateReger = {
+            Responsavel: Responsavel,
+            Status: Status,
+            DataAceito: DataAceito
+        }
+        const updatedRegear = await Regear.findByIdAndUpdate(id, updateReger);        
+    },
+    regearFinalizado:async(id, bauRegear, Status, DataFinalizado, Responsavel, MsgStaff)=>{
+        const updateReger = {
+            bauRegear: bauRegear,
+            Status: Status,
+            DataFinalizado: DataFinalizado,
+            MsgStaff: MsgStaff          
+        }
+        const updatedRegear = await Regear.findByIdAndUpdate(id, updateReger);
+    },
+    getRegears:async()=>{
+        const regears = await Regear.find();
+        return regears;
+    }
 }
