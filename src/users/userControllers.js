@@ -21,24 +21,18 @@ module.exports ={
         const newUser = await userServices.seveNewUser(Name, senhaHash, Cargo, backgroundHorda);        
         res.json(newUser);
     },
-    getAllMembres:async(req,res)=>{
-        let json= [];
-
+    getAllMembres: async (req, res) => {
         try {
             const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/guilds/${process.env.ID_GUILDA}/members`, { timeout: 1000000 });
-            const membros = response.data.length;
-
-            for(let i = 0; i < membros; i++){
-                let membro = {
-                    nome: response.data[i].Name,
-                    id: response.data[i].Id
-                }
-                json.push(membro);
-            }
+            const json = response.data.map(membro => ({
+                nome: membro.Name,
+                id: membro.Id
+            }));
+            res.json(json);
         } catch (error) {
             console.error('Erro ao fazer requisição:', error);
+            res.status(500).json({ message: 'Erro ao obter membros da guilda' });
         }
-        res.json(json);
     },
     checksName:async(req,res)=>{
         let json={

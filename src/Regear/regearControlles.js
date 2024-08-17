@@ -67,12 +67,12 @@ module.exports ={
     finalizaRegar:async(req, res)=>{
         let id = req.params.id
 
-        let MsgStaff = req.body.MsgStaff
-        let bauRegear = req.body.bauRegear
         let Status = req.body.Status
-        let DataFinalizado = req.body.DataFinalizado
+        let DataFinalizado = req.body.DataFinalizado 
+        let MsgStaff = req.body.MsgStaff     
+        
 
-        const attRegear = await regearServices.regearFinalizado(id, bauRegear, Status, DataFinalizado, MsgStaff);
+        const attRegear = await regearServices.regearFinalizado(id, Status, DataFinalizado, MsgStaff);
         res.json(attRegear);
     },
     getAllRegearStaff:async(req, res)=>{

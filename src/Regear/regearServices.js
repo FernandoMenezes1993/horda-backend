@@ -70,9 +70,8 @@ module.exports ={
         }
         const updatedRegear = await Regear.findByIdAndUpdate(id, updateReger);        
     },
-    regearFinalizado:async(id, bauRegear, Status, DataFinalizado, Responsavel, MsgStaff)=>{
+    regearFinalizado:async(id, Status, DataFinalizado, MsgStaff)=>{
         const updateReger = {
-            bauRegear: bauRegear,
             Status: Status,
             DataFinalizado: DataFinalizado,
             MsgStaff: MsgStaff          
