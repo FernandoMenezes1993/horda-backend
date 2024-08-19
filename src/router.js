@@ -54,4 +54,11 @@ router.get('/checks/:token', cors(corsOptions), userControllers.checkToken);
 
     router.put("/regear/finalizar/:id", cors(corsOptions), regearControllers.finalizaRegar);
     //Finaliza um regear
+
+    router.put("/resgatado/:id", cors(corsOptions), regearControllers.regearResgatado);
+    //Atualiza o status para resgatado
+
+    router.put("/regear/negado/:id", cors(corsOptions), regearControllers.regearNegado);
+    //Negar um regear
+
 module.exports = router;

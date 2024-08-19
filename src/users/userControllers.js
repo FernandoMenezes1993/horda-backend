@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
+let cacheMembros = null;
+let cacheTime = 0;
+const CACHE_DURATION = 3000000;
+
 module.exports ={
     addNewUser:async(req, res)=>{
         let json
@@ -23,17 +27,26 @@ module.exports ={
     },
     getAllMembres: async (req, res) => {
         try {
-            const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/guilds/${process.env.ID_GUILDA}/members`, { timeout: 1000000 });
+            const now = Date.now();
+            if (cacheMembros && (now - cacheTime) < CACHE_DURATION) {
+                return res.json(cacheMembros);
+            }
+
+            const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/guilds/${process.env.ID_GUILDA}/members`, { timeout: 30000 });
             const json = response.data.map(membro => ({
                 nome: membro.Name,
                 id: membro.Id
             }));
+            
+            cacheMembros = json;
+            cacheTime = now;
+
             res.json(json);
         } catch (error) {
             console.error('Erro ao fazer requisição:', error);
             res.status(500).json({ message: 'Erro ao obter membros da guilda' });
         }
-    },
+ },
     checksName:async(req,res)=>{
         let json={
             length:0
@@ -128,5 +141,5 @@ module.exports ={
             };
         }
         res.json(json);
-    }
+    },
 }

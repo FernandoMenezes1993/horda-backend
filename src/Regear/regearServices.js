@@ -19,12 +19,12 @@ const Regear = mongoose.model("Regear", {
     DataAceito: String,
     DataFinalizado: String,
     MsgStaff: String,
-    bauRegear: String,
-    Fama: String
+    Fama: String,
+    Evento: String
 });
 
 module.exports ={
-    saveReger:async(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, Capa, Bolsa, fama)=>{
+    saveReger:async(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, Capa, Bolsa, fama, Evento)=>{
         const newRegear = new Regear ({
             Name: Name,
             Link: Link,
@@ -42,8 +42,8 @@ module.exports ={
             DataAceito: "None",
             DataFinalizado: "None",
             MsgStaff: "Null",
-            bauRegear: "0",
-            Fama: fama
+            Fama: fama,
+            Evento: Evento
         });
         await newRegear.save();
         return newRegear;
@@ -81,5 +81,22 @@ module.exports ={
     getRegears:async()=>{
         const regears = await Regear.find();
         return regears;
+    },
+    ChecksEventoSxists:async(Evento)=>{
+        const eventoVerificado = Regear.find({ Evento: Evento });
+        return eventoVerificado;
+    },
+    regearResgatado:async(id, Status)=>{
+        const updateReger = {            
+            Status: Status            
+        }
+        const updatedRegear = await Regear.findByIdAndUpdate(id, updateReger);        
+    },
+    regearNegado:async(id, Status, MsgStaff)=>{
+        const updateReger = {            
+            Status: Status,
+            MsgStaff: MsgStaff            
+        }
+        const updatedRegear = await Regear.findByIdAndUpdate(id, updateReger);        
     }
 }

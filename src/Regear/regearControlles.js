@@ -20,9 +20,16 @@ module.exports ={
         let capa
         let bolsa
         let fama
+        let Vitima
+        let Evento
 
+        if (Link.includes('?')) {
+            Link = Link.split('?')[0];
+        }
+    
         const parts = Link.split('/');
         const lastParameter = parts[parts.length - 1];
+        Evento = lastParameter;
         try {
             const resposta = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/events/${lastParameter}`);
 
@@ -34,14 +41,24 @@ module.exports ={
             capa = resposta.data.Victim.Equipment.Cape ? resposta.data.Victim.Equipment.Cape.Type : "Null";
             bolsa = resposta.data.Victim.Equipment.Bag ? resposta.data.Victim.Equipment.Bag.Type : "Null";
             fama = resposta.data.Victim.DeathFame;
-
+            Vitima = resposta.data.Victim.Name;
         } catch (error) {
             res.status(500).send("500");
             return;
         }
-        const newRegear = await regearServices.saveReger(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, capa, bolsa, fama);
-
-        res.json(200);
+        if(Name === Vitima){
+            const ChecksEvento = await regearServices.ChecksEventoSxists(Evento);
+            if(ChecksEvento.length > 0){
+                res.json(404);
+            }else{
+                const newRegear = await regearServices.saveReger(Name, Link, Responsavel, Status, MainHand, OffHand, Cabeca, Peitoral, Bota, Data, Dia, capa, bolsa, fama, Evento);
+            
+                res.json(200);
+            }
+        }else{
+            res.json(400);
+        }
+        
     },
     getRegear:async(req, res)=>{
         let Nickname= req.params.Nickname
@@ -87,5 +104,20 @@ module.exports ={
             }
         }
         res.json(json);
-    }    
+    },
+    regearResgatado:async(req,res)=>{
+        let id = req.params.id        
+        let Status = req.body.Status
+
+        const attRegear = await regearServices.regearResgatado(id, Status);
+        res.json(attRegear);
+    },
+    regearNegado:async(req,res)=>{
+        let id = req.params.id        
+        let Status = req.body.Status
+        let MsgStaff = req.body.MsgStaff   
+
+        const attRegear = await regearServices.regearNegado(id, Status, MsgStaff);
+        res.json(attRegear);
+    }
 }
