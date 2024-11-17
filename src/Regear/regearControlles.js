@@ -43,7 +43,7 @@ module.exports ={
             fama = resposta.data.Victim.DeathFame;
             Vitima = resposta.data.Victim.Name;
         } catch (error) {
-            res.status(500).send("500");
+            res.json(500);
             return;
         }
         if(Name === Vitima){
